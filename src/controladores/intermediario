@@ -1,0 +1,55 @@
+const { contas } = require('../bancodedados')
+
+const validarSenha = (req, res, next) => {
+    const { senha_banco } = req.query;
+
+    if (senha_banco != "Cubos123Bank") {
+        return res.status(403).json({ mensagem: "A senha do banco informada é inválida!" });
+    }
+    next();
+};
+
+const validarDados = (req, res, next) => {
+    const { cpf, nome, data_nascimento, telefone, email, senha } = req.body
+    if (!nome) {
+        return res.status(400).json({ mensagem: "Obrigatório informar o nome" })
+    };
+
+    if (!cpf) {
+        return res.status(400).json({ mensagem: "Obrigatório informar o cpf" })
+    };
+
+    const verificarCPF = contas.find(elemento => elemento.usuario.cpf === cpf);
+
+    if (verificarCPF) {
+        return res.status(400).json({ mensagem: "Já existe uma conta com o cpf informado" })
+    }
+
+    if (!data_nascimento) {
+        return res.status(400).json({ mensagem: "Obrigatório informar a data de nascimento" })
+    };
+
+    if (!telefone) {
+        return res.status(400).json({ mensagem: "Obrigatório informar o telefone" })
+    };
+
+    if (!email) {
+        return res.status(400).json({ mensagem: "Obrigatório informar o email" })
+    };
+    const verificarEmail = contas.find((elementoa => elementoa.usuario.email === email));
+
+    if (verificarEmail) {
+        return res.status(400).json({ mensagem: "Já existe uma conta com o email informado" })
+    };
+
+    if (!senha) {
+        return res.status(400).json({ mensagem: "Obrigatório informar a senha" })
+    };
+
+    next();
+};
+
+module.exports = {
+    validarSenha,
+    validarDados,
+}
