@@ -6,7 +6,7 @@
 
 
 ##O que é o Projeto:
-Criação de uma API para um banco digital
+Criação de uma API para um banco digital;
 
 
 
